@@ -16,4 +16,60 @@ CHAR(3) -- => 4개의 글씨만쓸수있음
 -- float/double은 decimal보다 용량이 작은대신 정밀도 손실이 발생할 가능성이 있다
 
 -- DATE/TIME/DATETIME
- \
+-- 사용형식
+ DATE'YYYY-MM-DD' TIME 'HH:MM:SS' DATETIME 'YYYY-MM-DD HH:MM:SS'
+-- 예시
+CREATE TABLE people (
+	name VARCHAR(100),
+    birthdate DATE,
+    birthtime TIME,
+    birthdt DATETIME
+);
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Elton', '2000-12-25', '11:00:00', '2000-12-25 11:00:00');
+
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Lulu', '1985-04-11', '9:45:10', '1985-04-11 9:45:10');
+ 
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Juan', '2020-08-15', '23:59:00', '2020-08-15 23:59:00');
+-- current_date / current_time / current_timestamp
+select current_date = select curdate() 같은 의미
+select current_time = select curtime() 같은 의미
+select current_timestamp = select now() 같은 의미
+-- 예제
+SELECT CURTIME(); 
+SELECT CURDATE(); 
+SELECT NOW(); 
+ 
+INSERT INTO people (name, birthdate, birthtime, birthdt)
+VALUES ('Hazel', CURDATE(), CURTIME(), NOW());
+
+-- DAY() / DAYOFWEEK() / dayofyear() / MONTHNAME(birthdate) / YEAR(birthdate)
+-- DAY() 은 날짜
+-- DAYOFWEEK()은 1~7까지 출력 1 = 일요일
+-- dayofyear()은 그해의 날짜 출력 // 12/25일은 360으로 출력
+-- MONTHNAME(birthdate) 월출력
+-- YEAR(birthdate)은 연도출력
+
+-- DATE_FORMAT(%y,%h,%s)
+-- 예시
+SELECT birthdate, DATE_FORMAT(birthdate, '%a %b %D') FROM people;
+SELECT birthdt, DATE_FORMAT(birthdt, '%H:%i') FROM people;
+SELECT birthdt, DATE_FORMAT(birthdt, 'BORN ON: %r') FROM people;
+
+-- TIMESTAMP
+-- 예시
+CREATE TABLE captions (
+  text VARCHAR(150),
+  created_at TIMESTAMP default CURRENT_TIMESTAMP
+);
+ 
+CREATE TABLE captions2 (
+  text VARCHAR(150),
+  created_at TIMESTAMP default CURRENT_TIMESTAMP,
+  updated_at TIMESTAMP ON UPDATE CURRENT_TIMESTAMP
+);
+-- => 여기서 
+insert into caption2 (text) VALUES ('i love me!'); --한후에
+UPDATE caption2 SET text='i love live!!!' --입력하면 updated_at 에 업데이트 이력이 찍힘
