@@ -71,3 +71,27 @@ SELECT title, released_year FROM books
 WHERE released_year >= 2000 
 AND released_year % 2 = 1; -- released_year % 2 != 0 이렇게도사용가능
 --  released_year 짝수가 출력이 안된다.
+
+-- case문
+select <column_name>
+case
+    when <column_name> between num and num then '사용할문구 나 숫자'
+    else 원하는값
+end 
+from <table_name>
+-- 예시
+select title,books.stock_quantity,
+    case                                                  --이렇게 바꿔사용할수있다
+        when stock_quantity between 0 and 40 then '*' -- when stock_quantity <= 40 then '*'
+        when stock_quantity between 41 and 70  then '**' -- when stock_quantity <= 70 then '**'
+        when stock_quantity between 71 and 100  then '***' -- when stock_quantity <= 100 then '***'
+        when stock_quantity between 101 and 150  then '****' -- when stock_quantity <= 150 then '****'
+        else '*****'
+    end as stock
+    from books
+
+-- is null
+-- where 조건문 뒤에 오는 null 값 출력 // is not null은 null값이 아닌것 출력
+select * from <table_name> where <column_name> is null -- 또는 not null
+-- delete  from books  where  books.author_lname is null 이런식으로도 사용가능
+
